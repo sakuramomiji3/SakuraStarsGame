@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
 <head>
-  <title>SakuraStars</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width initial-scale=1">
+  <title>SakuraStars</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- ローカル読み込み（これが重要） -->
-<script src="https://cdn.socket.io/2.4.0/socket.io.js"></script>
+  <!-- ★重要：v2系で完全固定 -->
+  <script src="https://cdn.socket.io/2.1.1/socket.io.js"></script>
 </head>
 
 <body>
 <h2>Socket.IO Test</h2>
 
 <script>
-  // ★ここが超重要（localhostでまず確認）
+  // ★サーバーに接続（LAN IP）
   const socket = io("http://192.168.3.19:9092", {
-    transports: ["websocket"]
+    transports: ["websocket", "polling"]
   });
 
   socket.on("connect", () => {
@@ -38,9 +38,12 @@
     console.log("🚪 left:", id);
   });
 
-  // テスト送信
+  // テスト送信（2秒ごと）
   setInterval(() => {
-    socket.emit("playerMoved", Math.random()*800, Math.random()*600);
+    socket.emit("playerMoved",
+      Math.random() * 800,
+      Math.random() * 600
+    );
   }, 2000);
 </script>
 
